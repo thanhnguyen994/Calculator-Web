@@ -21,7 +21,13 @@ class Calculator {
     }
 
     chooseOperation(operation) {
-        if(this.currentOperand === '') return
+        if(this.currentOperand === '' && this.previousOperand === '') return
+        
+        if(this.currentOperand === '') {
+            this.operation = operation
+            return
+        }
+        
         if(this.previousOperand !== '') {
             this.compute()
         }
@@ -99,11 +105,16 @@ const currentOperandTextElement = document.querySelector('[data-current-operand]
 
 const calculator = new Calculator(previousOperandTextElement, currentOperandTextElement);
 
-
+numberButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        calculator.appendNumber(button.innerText)   // gắn cho số
+        calculator.updateDisplay()
+    })
+})
 
 operationButtons.forEach(button => {
     button.addEventListener('click', () => {
-        calculator.appendNumber(button.innerText)
+        calculator.chooseOperation(button.innerText) // gắn cho phép toán
         calculator.updateDisplay()
     })
 })
